@@ -25,7 +25,9 @@ export const SolanaWalletProvider = ({ children }) => {
   // Solana network - use devnet for testing
   const network = process.env.REACT_APP_SOLANA_NETWORK || 'devnet';
   const endpoint = useMemo(
-    () => process.env.REACT_APP_SOLANA_RPC_URL || clusterApiUrl(network),
+    () => process.env.REACT_APP_SOLANA_RPC_URL ||
+      // Use Ankr public RPC as fallback (more reliable than default Solana RPC)
+      (network === 'devnet' ? 'https://rpc.ankr.com/solana_devnet' : clusterApiUrl(network)),
     [network]
   );
 
