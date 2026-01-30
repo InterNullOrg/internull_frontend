@@ -1,0 +1,2272 @@
+{
+  "address": "5zjh95A1KgD6R7MidR6vDUCYAoKpmKcfNhMbRBkiLsmE",
+  "metadata": {
+    "name": "internull",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "InterNull - Privacy-preserving transaction protocol for Solana"
+  },
+  "instructions": [
+    {
+      "name": "add_merkle_root",
+      "docs": [
+        "Add a new merkle root for SPL token"
+      ],
+      "discriminator": [
+        235,
+        31,
+        120,
+        49,
+        53,
+        9,
+        197,
+        147
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "merkle_root_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  114,
+                  107,
+                  114,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "merkle_root_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "merkle_root_id",
+          "type": "u64"
+        },
+        {
+          "name": "root",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "token",
+          "type": "pubkey"
+        },
+        {
+          "name": "denomination",
+          "type": "u64"
+        },
+        {
+          "name": "total_keys",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "add_merkle_root_native",
+      "docs": [
+        "Add a new merkle root for native SOL"
+      ],
+      "discriminator": [
+        191,
+        201,
+        253,
+        246,
+        96,
+        157,
+        73,
+        8
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "merkle_root_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  114,
+                  107,
+                  114,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "merkle_root_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "merkle_root_id",
+          "type": "u64"
+        },
+        {
+          "name": "root",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "denomination",
+          "type": "u64"
+        },
+        {
+          "name": "total_keys",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "add_token",
+      "docs": [
+        "Add a new supported token"
+      ],
+      "discriminator": [
+        237,
+        255,
+        26,
+        54,
+        56,
+        48,
+        68,
+        52
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "token_mint",
+          "type": "pubkey"
+        },
+        {
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "name": "decimals",
+          "type": "u8"
+        },
+        {
+          "name": "denominations",
+          "type": {
+            "vec": "u64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "deactivate_merkle_root",
+      "docs": [
+        "Deactivate a merkle root"
+      ],
+      "discriminator": [
+        74,
+        121,
+        58,
+        226,
+        208,
+        155,
+        94,
+        37
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "merkle_root_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  114,
+                  107,
+                  114,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "merkle_root_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "merkle_root_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "deposit_native",
+      "docs": [
+        "Deposit native SOL"
+      ],
+      "discriminator": [
+        13,
+        158,
+        13,
+        223,
+        95,
+        213,
+        28,
+        6
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "depositor",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "deposit_token",
+      "docs": [
+        "Deposit SPL tokens"
+      ],
+      "discriminator": [
+        11,
+        156,
+        96,
+        218,
+        39,
+        163,
+        180,
+        19
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "depositor_token_account",
+          "writable": true
+        },
+        {
+          "name": "treasury_token_account",
+          "writable": true
+        },
+        {
+          "name": "depositor",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "emergency_withdraw_native",
+      "docs": [
+        "Emergency withdraw native SOL (only when paused)"
+      ],
+      "discriminator": [
+        154,
+        209,
+        39,
+        164,
+        77,
+        198,
+        95,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "emergency_withdraw_token",
+      "docs": [
+        "Emergency withdraw SPL tokens (only when paused)"
+      ],
+      "discriminator": [
+        223,
+        158,
+        99,
+        222,
+        87,
+        171,
+        16,
+        162
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "treasury_token_account",
+          "writable": true
+        },
+        {
+          "name": "admin_token_account",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Initialize the treasury"
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pause",
+      "docs": [
+        "Pause the contract"
+      ],
+      "discriminator": [
+        211,
+        22,
+        221,
+        251,
+        74,
+        121,
+        193,
+        47
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "remove_token",
+      "docs": [
+        "Remove/deactivate a token"
+      ],
+      "discriminator": [
+        149,
+        134,
+        57,
+        61,
+        136,
+        2,
+        144,
+        145
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.mint",
+                "account": "TokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unpause",
+      "docs": [
+        "Unpause the contract"
+      ],
+      "discriminator": [
+        169,
+        144,
+        4,
+        38,
+        10,
+        141,
+        188,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_denominations",
+      "docs": [
+        "Update denominations for a token"
+      ],
+      "discriminator": [
+        206,
+        85,
+        246,
+        72,
+        78,
+        247,
+        230,
+        199
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_config.mint",
+                "account": "TokenConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_denominations",
+          "type": {
+            "vec": "u64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "withdraw_fees_native",
+      "docs": [
+        "Withdraw collected fees (native SOL)"
+      ],
+      "discriminator": [
+        37,
+        248,
+        47,
+        53,
+        137,
+        209,
+        57,
+        187
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "withdraw_fees_token",
+      "docs": [
+        "Withdraw collected fees (SPL tokens)"
+      ],
+      "discriminator": [
+        164,
+        141,
+        26,
+        138,
+        241,
+        201,
+        11,
+        232
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "treasury_token_account",
+          "writable": true
+        },
+        {
+          "name": "admin_token_account",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "withdraw_native",
+      "docs": [
+        "Withdraw native SOL with OTS signature"
+      ],
+      "discriminator": [
+        113,
+        227,
+        26,
+        32,
+        53,
+        66,
+        90,
+        250
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "merkle_root_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  114,
+                  107,
+                  114,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "merkle_root_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  114,
+                  0
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "merkle_root_id"
+              },
+              {
+                "kind": "arg",
+                "path": "key_index"
+              }
+            ]
+          }
+        },
+        {
+          "name": "recipient",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "merkle_root_id",
+          "type": "u64"
+        },
+        {
+          "name": "signature",
+          "type": {
+            "array": [
+              "u8",
+              64
+            ]
+          }
+        },
+        {
+          "name": "public_key",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "merkle_proof",
+          "type": {
+            "vec": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        },
+        {
+          "name": "key_index",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw_token",
+      "docs": [
+        "Withdraw SPL tokens with OTS signature"
+      ],
+      "discriminator": [
+        136,
+        235,
+        181,
+        5,
+        101,
+        109,
+        57,
+        81
+      ],
+      "accounts": [
+        {
+          "name": "treasury_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "merkle_root_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  114,
+                  107,
+                  114,
+                  111,
+                  111,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "merkle_root_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  114,
+                  0
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "merkle_root_id"
+              },
+              {
+                "kind": "arg",
+                "path": "key_index"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "recipient_token_account",
+          "writable": true
+        },
+        {
+          "name": "treasury_token_account",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "merkle_root_id",
+          "type": "u64"
+        },
+        {
+          "name": "signature",
+          "type": {
+            "array": [
+              "u8",
+              64
+            ]
+          }
+        },
+        {
+          "name": "public_key",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "merkle_proof",
+          "type": {
+            "vec": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        },
+        {
+          "name": "key_index",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "MerkleRootAccount",
+      "discriminator": [
+        248,
+        12,
+        63,
+        117,
+        38,
+        72,
+        89,
+        66
+      ]
+    },
+    {
+      "name": "NullifierAccount",
+      "discriminator": [
+        250,
+        31,
+        238,
+        177,
+        213,
+        98,
+        48,
+        172
+      ]
+    },
+    {
+      "name": "TokenConfig",
+      "discriminator": [
+        92,
+        73,
+        255,
+        43,
+        107,
+        51,
+        117,
+        101
+      ]
+    },
+    {
+      "name": "TreasuryState",
+      "discriminator": [
+        240,
+        56,
+        226,
+        158,
+        138,
+        244,
+        79,
+        154
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "ContractPausedEvent",
+      "discriminator": [
+        144,
+        221,
+        82,
+        196,
+        25,
+        44,
+        143,
+        124
+      ]
+    },
+    {
+      "name": "ContractUnpausedEvent",
+      "discriminator": [
+        111,
+        115,
+        253,
+        49,
+        71,
+        103,
+        69,
+        138
+      ]
+    },
+    {
+      "name": "DenominationsUpdatedEvent",
+      "discriminator": [
+        187,
+        35,
+        179,
+        210,
+        233,
+        156,
+        228,
+        75
+      ]
+    },
+    {
+      "name": "DepositEvent",
+      "discriminator": [
+        120,
+        248,
+        61,
+        83,
+        31,
+        142,
+        107,
+        144
+      ]
+    },
+    {
+      "name": "EmergencyWithdrawEvent",
+      "discriminator": [
+        177,
+        61,
+        254,
+        20,
+        145,
+        18,
+        188,
+        237
+      ]
+    },
+    {
+      "name": "FeesWithdrawnEvent",
+      "discriminator": [
+        93,
+        177,
+        0,
+        69,
+        15,
+        156,
+        73,
+        194
+      ]
+    },
+    {
+      "name": "MerkleRootAddedEvent",
+      "discriminator": [
+        117,
+        233,
+        236,
+        139,
+        249,
+        200,
+        20,
+        225
+      ]
+    },
+    {
+      "name": "MerkleRootDeactivatedEvent",
+      "discriminator": [
+        197,
+        118,
+        108,
+        135,
+        173,
+        112,
+        213,
+        39
+      ]
+    },
+    {
+      "name": "TokenAddedEvent",
+      "discriminator": [
+        87,
+        57,
+        59,
+        239,
+        206,
+        101,
+        116,
+        48
+      ]
+    },
+    {
+      "name": "TokenRemovedEvent",
+      "discriminator": [
+        251,
+        146,
+        96,
+        207,
+        163,
+        222,
+        37,
+        20
+      ]
+    },
+    {
+      "name": "WithdrawalEvent",
+      "discriminator": [
+        161,
+        53,
+        185,
+        18,
+        98,
+        254,
+        54,
+        165
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "Unauthorized access"
+    },
+    {
+      "code": 6001,
+      "name": "ContractPaused",
+      "msg": "Contract is paused"
+    },
+    {
+      "code": 6002,
+      "name": "NotPaused",
+      "msg": "Contract is not paused"
+    },
+    {
+      "code": 6003,
+      "name": "AlreadyPaused",
+      "msg": "Contract is already paused"
+    },
+    {
+      "code": 6004,
+      "name": "TokenNotSupported",
+      "msg": "Token not supported"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidDenomination",
+      "msg": "Invalid denomination"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidMerkleRoot",
+      "msg": "Invalid merkle root"
+    },
+    {
+      "code": 6007,
+      "name": "NullifierAlreadyUsed",
+      "msg": "Nullifier already used"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidSignature",
+      "msg": "Invalid signature"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidMerkleProof",
+      "msg": "Invalid merkle proof"
+    },
+    {
+      "code": 6010,
+      "name": "InsufficientLiquidity",
+      "msg": "Insufficient liquidity"
+    },
+    {
+      "code": 6011,
+      "name": "MerkleRootNotFound",
+      "msg": "Merkle root not found"
+    },
+    {
+      "code": 6012,
+      "name": "InvalidTokenConfig",
+      "msg": "Invalid token config"
+    },
+    {
+      "code": 6013,
+      "name": "MerkleRootTokenMismatch",
+      "msg": "Merkle root token mismatch"
+    },
+    {
+      "code": 6014,
+      "name": "MerkleRootDenominationMismatch",
+      "msg": "Merkle root denomination mismatch"
+    },
+    {
+      "code": 6015,
+      "name": "InvalidTokenAccount",
+      "msg": "Invalid token account"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidTokenMint",
+      "msg": "Invalid token mint"
+    },
+    {
+      "code": 6017,
+      "name": "InvalidTreasuryAccount",
+      "msg": "Invalid treasury account"
+    },
+    {
+      "code": 6018,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6019,
+      "name": "InsufficientFunds",
+      "msg": "Insufficient funds"
+    },
+    {
+      "code": 6020,
+      "name": "TooManyMerkleRoots",
+      "msg": "Too many merkle roots"
+    },
+    {
+      "code": 6021,
+      "name": "MerkleRootAlreadyExists",
+      "msg": "Merkle root already exists"
+    },
+    {
+      "code": 6022,
+      "name": "InvalidRootId",
+      "msg": "Invalid root ID"
+    },
+    {
+      "code": 6023,
+      "name": "NoFeesToWithdraw",
+      "msg": "No fees to withdraw"
+    },
+    {
+      "code": 6024,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
+    }
+  ],
+  "types": [
+    {
+      "name": "ContractPausedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ContractUnpausedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DenominationsUpdatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "denominations",
+            "type": {
+              "vec": "u64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "DepositEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "depositor",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EmergencyWithdrawEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FeesWithdrawnEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MerkleRootAccount",
+      "docs": [
+        "Merkle root account - stores information about a batch of OTS keys",
+        "Each merkle root is bound to a specific token and denomination"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "docs": [
+              "Unique ID for this merkle root"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "root",
+            "docs": [
+              "The merkle root hash"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "token",
+            "docs": [
+              "Token mint this root is for (System Program for native SOL)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "denomination",
+            "docs": [
+              "Specific denomination for this root (in base units)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "is_active",
+            "docs": [
+              "Whether this root is active"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "total_keys",
+            "docs": [
+              "Total number of keys in this batch"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "used_keys",
+            "docs": [
+              "Number of keys used so far"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "docs": [
+              "Timestamp when root was added"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MerkleRootAddedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root_id",
+            "type": "u64"
+          },
+          {
+            "name": "root",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "denomination",
+            "type": "u64"
+          },
+          {
+            "name": "total_keys",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MerkleRootDeactivatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root_id",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NullifierAccount",
+      "docs": [
+        "Nullifier account - prevents double-spending",
+        "Each nullifier is unique per (merkle_root_id, key_index) combination"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nullifier",
+            "docs": [
+              "The nullifier hash (keccak256(merkleRootId, keyIndex))"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "is_used",
+            "docs": [
+              "Whether this nullifier has been used"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokenAddedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "decimals",
+            "type": "u8"
+          },
+          {
+            "name": "denominations",
+            "type": {
+              "vec": "u64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokenConfig",
+      "docs": [
+        "Token configuration account",
+        "Stores information about supported tokens and their denominations"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "docs": [
+              "Token mint address (System Program for native SOL)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "symbol",
+            "docs": [
+              "Token symbol (e.g., \"SOL\", \"USDC\")"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "decimals",
+            "docs": [
+              "Token decimals"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "is_active",
+            "docs": [
+              "Whether this token is active"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "denominations",
+            "docs": [
+              "Supported denominations (in base units)"
+            ],
+            "type": {
+              "vec": "u64"
+            }
+          },
+          {
+            "name": "total_deposited",
+            "docs": [
+              "Total deposited for this token"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_withdrawn",
+            "docs": [
+              "Total withdrawn for this token"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_fees",
+            "docs": [
+              "Total fees collected for this token"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokenRemovedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TreasuryState",
+      "docs": [
+        "Main treasury state account",
+        "Controls all funds and administrative settings"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "docs": [
+              "Admin public key (equivalent to Ownable.owner())"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "paused",
+            "docs": [
+              "Pausable state"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "next_merkle_id",
+            "docs": [
+              "Counter for merkle root IDs"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "native_total_deposited",
+            "docs": [
+              "Total deposited per token (for statistics)",
+              "Note: In Solana, we track this differently - we'll use events for statistics",
+              "This is just a counter, actual tokens are in separate token accounts"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "native_total_withdrawn",
+            "docs": [
+              "Total withdrawn (native token)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "native_total_fees",
+            "docs": [
+              "Total fees collected (native token)"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WithdrawalEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "nullifier_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "merkle_root_id",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}
