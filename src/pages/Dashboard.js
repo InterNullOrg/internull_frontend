@@ -100,6 +100,7 @@ const Dashboard = () => {
   const [targetChain, setTargetChain] = useState('sepolia'); // Chain where keys will be used
   const [supportedChains, setSupportedChains] = useState([]); // Chains loaded from backend
   const [availableTokens, setAvailableTokens] = useState([]); // Available tokens for the source chain
+  const [backendVersion, setBackendVersion] = useState('v1'); // Backend version: 'v1' (pre-generated) or 'v2' (on-the-fly)
 
   // Key download/upload states
   const [passwordDialog, setPasswordDialog] = useState(false);
@@ -1397,9 +1398,20 @@ const Dashboard = () => {
     }
   };
 
+  // Handle backend version change
+  const handleBackendVersionChange = (version) => {
+    setBackendVersion(version);
+    singleNodeWithdrawal.setBackendVersion(version);
+    solanaInternullService.setBackendVersion(version);
+    multiTokenTreasuryService.setBackendVersion(version);
+    console.log(`🔄 Switched to backend ${version.toUpperCase()}`);
+    toast.info(`Switched to ${version.toUpperCase()} backend`);
+  };
+
   const executeKeyRequest = async () => {
     console.log('🚀 executeKeyRequest called');
     console.log('📋 selectedDeposit:', selectedDeposit);
+    console.log('🔧 Using backend version:', backendVersion);
 
     if (!selectedDeposit) {
       console.error('❌ Missing selectedDeposit');
@@ -3123,6 +3135,39 @@ const Dashboard = () => {
               <strong>Token:</strong> Using <strong>{selectedDeposit?.metadata?.token || 'ETH'}</strong> from your deposit.
             </Typography>
           </Alert>
+
+          {/* Backend Version Selector */}
+          <Box sx={{ mb: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 'bold' }}>
+              Backend Version
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button
+                variant={backendVersion === 'v1' ? 'contained' : 'outlined'}
+                onClick={() => handleBackendVersionChange('v1')}
+                sx={{ flex: 1 }}
+                color={backendVersion === 'v1' ? 'primary' : 'inherit'}
+              >
+                V1 (Pre-generated)
+              </Button>
+              <Button
+                variant={backendVersion === 'v2' ? 'contained' : 'outlined'}
+                onClick={() => handleBackendVersionChange('v2')}
+                sx={{ flex: 1 }}
+                color={backendVersion === 'v2' ? 'success' : 'inherit'}
+              >
+                V2 (On-the-fly)
+              </Button>
+            </Box>
+            <Typography variant="caption" sx={{ display: 'block', mt: 1, color: 'text.secondary' }}>
+              {backendVersion === 'v1'
+                ? 'V1: Uses pre-generated keys (legacy system)'
+                : 'V2: Keys are derived on-the-fly using deterministic derivation (supports up to 1M keys per batch)'}
+            </Typography>
+            <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary' }}>
+              Current backend: {backendVersion === 'v1' ? 'https://api.internull.xyz' : 'https://api-v2.internull.xyz'}
+            </Typography>
+          </Box>
 
           <Typography variant="h6" sx={{ mb: 2 }}>
             Denomination Requests

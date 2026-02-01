@@ -1,6 +1,10 @@
 import { ethers } from 'ethers';
 import MultiTokenTreasuryABI from '../contracts/MultiTokenTreasury.json';
 
+// Backend URLs - V1 (pre-generated keys) and V2 (on-the-fly key derivation)
+const BACKEND_URL_V1 = process.env.REACT_APP_API_URL || 'https://api.internull.xyz';
+const BACKEND_URL_V2 = process.env.REACT_APP_API_URL_V2 || 'https://api-v2.internull.xyz';
+
 class MultiTokenTreasuryService {
   constructor() {
     this.contractAddress = null;
@@ -10,8 +14,29 @@ class MultiTokenTreasuryService {
     this.supportedTokens = new Map();
     this.supportedChains = new Map();
     this.chainContractAddresses = new Map(); // Maps chainId -> treasury address
-    this.backendUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+    this.backendVersion = 'v1';
+    this.backendUrl = BACKEND_URL_V1;
     this.chainsLoaded = false;
+  }
+
+  /**
+   * Set the backend version to use
+   * @param {string} version 'v1' or 'v2'
+   */
+  setBackendVersion(version) {
+    this.backendVersion = version;
+    this.backendUrl = version === 'v2' ? BACKEND_URL_V2 : BACKEND_URL_V1;
+    // Reset chains loaded flag so they can be reloaded from the new backend
+    this.chainsLoaded = false;
+    console.log(`🔄 MultiToken backend switched to ${version.toUpperCase()}: ${this.backendUrl}`);
+  }
+
+  /**
+   * Get current backend version
+   * @returns {string} 'v1' or 'v2'
+   */
+  getBackendVersion() {
+    return this.backendVersion;
   }
 
   async initialize(provider, signer, contractAddress) {

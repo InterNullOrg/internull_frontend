@@ -16,6 +16,10 @@ import {
 import * as borsh from 'borsh';
 // Using raw Solana instructions instead of Anchor to avoid IDL compatibility issues
 
+// Backend URLs - V1 (pre-generated keys) and V2 (on-the-fly key derivation)
+const BACKEND_URL_V1 = process.env.REACT_APP_API_URL || 'https://api.internull.xyz';
+const BACKEND_URL_V2 = process.env.REACT_APP_API_URL_V2 || 'https://api-v2.internull.xyz';
+
 class SolanaInternullService {
   constructor() {
     this.programId = new PublicKey('5zjh95A1KgD6R7MidR6vDUCYAoKpmKcfNhMbRBkiLsmE');
@@ -23,7 +27,26 @@ class SolanaInternullService {
     this.program = null;
     this.provider = null;
     this.wallet = null;
-    this.backendUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+    this.backendVersion = 'v1';
+    this.backendUrl = BACKEND_URL_V1;
+  }
+
+  /**
+   * Set the backend version to use for key requests
+   * @param {string} version 'v1' or 'v2'
+   */
+  setBackendVersion(version) {
+    this.backendVersion = version;
+    this.backendUrl = version === 'v2' ? BACKEND_URL_V2 : BACKEND_URL_V1;
+    console.log(`🔄 Solana backend switched to ${version.toUpperCase()}: ${this.backendUrl}`);
+  }
+
+  /**
+   * Get current backend version
+   * @returns {string} 'v1' or 'v2'
+   */
+  getBackendVersion() {
+    return this.backendVersion;
   }
 
   async initialize(connection, wallet) {

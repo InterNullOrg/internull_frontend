@@ -8,7 +8,9 @@ import Web3 from 'web3';
 import { ethers } from 'ethers';
 import treasuryABI from '../abi/MultiTokenTreasury.json';
 
-const NODE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+// Backend URLs - V1 (pre-generated keys) and V2 (on-the-fly key derivation)
+const NODE_URL_V1 = process.env.REACT_APP_API_URL || 'https://api.internull.xyz';
+const NODE_URL_V2 = process.env.REACT_APP_API_URL_V2 || 'https://api-v2.internull.xyz';
 const TREASURY_ADDRESS = process.env.REACT_APP_TREASURY_CONTRACT ||
     process.env.REACT_APP_TREASURY_CONTRACT_ADDRESS ||
     process.env.REACT_APP_MULTITOKEN_TREASURY_ADDRESS ||
@@ -18,6 +20,34 @@ class SingleNodeWithdrawalService {
     constructor() {
         this.web3 = null;
         this.treasuryContract = null;
+        this.backendVersion = 'v1'; // Default to V1
+        this.nodeUrl = NODE_URL_V1;
+    }
+
+    /**
+     * Set the backend version to use for key requests
+     * @param {string} version 'v1' or 'v2'
+     */
+    setBackendVersion(version) {
+        this.backendVersion = version;
+        this.nodeUrl = version === 'v2' ? NODE_URL_V2 : NODE_URL_V1;
+        console.log(`🔄 Backend switched to ${version.toUpperCase()}: ${this.nodeUrl}`);
+    }
+
+    /**
+     * Get current backend version
+     * @returns {string} 'v1' or 'v2'
+     */
+    getBackendVersion() {
+        return this.backendVersion;
+    }
+
+    /**
+     * Get current node URL
+     * @returns {string} Current backend URL
+     */
+    getNodeUrl() {
+        return this.nodeUrl;
     }
 
     // Getter to check if initialized
@@ -142,7 +172,7 @@ class SingleNodeWithdrawalService {
             }
 
             // Make request to single node with signature
-            const response = await fetch(`${NODE_URL}/api/v1/withdrawal`, {
+            const response = await fetch(`${this.nodeUrl}/api/v1/withdrawal`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -624,7 +654,7 @@ class SingleNodeWithdrawalService {
      */
     async getTokens() {
         try {
-            const response = await fetch(`${NODE_URL}/api/v1/tokens`);
+            const response = await fetch(`${this.nodeUrl}/api/v1/tokens`);
             const data = await response.json();
             return data.tokens;
         } catch (error) {
@@ -640,7 +670,7 @@ class SingleNodeWithdrawalService {
      */
     async getDenominations(tokenSymbol) {
         try {
-            const response = await fetch(`${NODE_URL}/api/v1/denominations/${tokenSymbol}`);
+            const response = await fetch(`${this.nodeUrl}/api/v1/denominations/${tokenSymbol}`);
             const data = await response.json();
             return data.denominations;
         } catch (error) {
@@ -655,7 +685,7 @@ class SingleNodeWithdrawalService {
      */
     async getInventory() {
         try {
-            const response = await fetch(`${NODE_URL}/api/v1/inventory`);
+            const response = await fetch(`${this.nodeUrl}/api/v1/inventory`);
             const data = await response.json();
             return data.stats;
         } catch (error) {
@@ -796,7 +826,7 @@ class SingleNodeWithdrawalService {
             }
 
             // Make request to single node with signature
-            const response = await fetch(`${NODE_URL}/api/v1/cross-chain/request-mixed-withdrawal`, {
+            const response = await fetch(`${this.nodeUrl}/api/v1/cross-chain/request-mixed-withdrawal`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
