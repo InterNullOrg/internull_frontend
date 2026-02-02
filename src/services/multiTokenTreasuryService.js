@@ -402,7 +402,7 @@ class MultiTokenTreasuryService {
             name: chain.name || chain.chain_name,
             chainName: chain.chain_name,
             chainType: chain.chain_type || 'evm', // Store chain type (evm or solana)
-            rpcUrl: '', // RPC URL not exposed to frontend for security
+            rpcUrl: chain.rpc_url || '', // Use RPC URL from backend if provided
             treasuryAddress: chain.treasury_address,
             blockExplorer: chain.block_explorer,
             nativeCurrency: chain.native_currency || 'ETH',
@@ -523,6 +523,22 @@ class MultiTokenTreasuryService {
 
   getContractAddressForChain(chainId) {
     return this.chainContractAddresses.get(chainId);
+  }
+
+  // Get RPC URL for a specific chain (useful for Solana)
+  getRpcUrlForChain(chainId) {
+    const chainInfo = this.supportedChains.get(chainId);
+    return chainInfo?.rpcUrl || null;
+  }
+
+  // Get RPC URL by chain name (e.g., 'solana-devnet')
+  getRpcUrlByChainName(chainName) {
+    for (const [_, chainInfo] of this.supportedChains.entries()) {
+      if (chainInfo.chainName === chainName) {
+        return chainInfo.rpcUrl || null;
+      }
+    }
+    return null;
   }
 
   async switchChain(chainId) {

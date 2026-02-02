@@ -52,6 +52,7 @@ import { ethers } from 'ethers';
 
 import { useWallet } from '../hooks/useWallet';
 import { useWallet as useSolWallet, useConnection } from '@solana/wallet-adapter-react';
+import { Connection } from '@solana/web3.js';
 import depositTracker from '../services/depositTracker';
 import singleNodeWithdrawal from '../services/singleNodeWithdrawal';
 import { WithdrawalServiceECDSA } from '../services/withdrawalServiceECDSA';
@@ -1175,11 +1176,21 @@ const Dashboard = () => {
           chainName: keyToUse.chain_name
         });
 
+        // Try to use backend RPC for better performance, fall back to default connection
+        let connectionToUse = solanaConnection;
+        const backendRpcUrl = multiTokenTreasuryService.getRpcUrlByChainName(keyToUse.chain_name || 'solana-devnet');
+        if (backendRpcUrl) {
+          console.log('🔗 Using backend RPC for Solana:', backendRpcUrl);
+          connectionToUse = new Connection(backendRpcUrl, 'confirmed');
+        } else {
+          console.log('🔗 Using default Solana connection (no backend RPC configured)');
+        }
+
         // Execute Solana withdrawal using the Solana service
         result = await solanaInternullService.executeWithdrawal(
           keyToUse,
           recipientAddress,
-          solanaConnection,
+          connectionToUse,
           solanaWallet
         );
 
