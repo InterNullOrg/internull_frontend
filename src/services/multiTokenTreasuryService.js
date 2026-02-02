@@ -515,6 +515,7 @@ class MultiTokenTreasuryService {
       name: info.name,
       chainName: info.chainName,
       chainType: info.chainType || 'evm', // Include chain type
+      rpcUrl: info.rpcUrl || '', // Include RPC URL from backend
       treasuryAddress: info.treasuryAddress,
       blockExplorer: info.blockExplorer,
       nativeCurrency: info.nativeCurrency
