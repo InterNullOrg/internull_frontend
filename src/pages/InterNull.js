@@ -46,6 +46,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useWallet } from '../hooks/useWallet';
 import { useWallet as useSolWallet, useConnection } from '@solana/wallet-adapter-react';
+import { Connection } from '@solana/web3.js';
 import depositTracker from '../services/depositTracker';
 import multiTokenTreasuryService from '../services/multiTokenTreasuryService';
 import solanaInternullService from '../services/solanaInternullService';
@@ -521,8 +522,18 @@ const InterNull = () => {
           isNative: isNativeSOL
         });
 
-        // Initialize Solana service
-        await solanaInternullService.initialize(solanaConnection, {
+        // Use backend RPC for better performance if available
+        let connectionToUse = solanaConnection;
+        const backendRpcUrl = multiTokenTreasuryService.getRpcUrlByChainName('solana-devnet');
+        if (backendRpcUrl) {
+          console.log('🔗 Using backend RPC for Solana deposit:', backendRpcUrl);
+          connectionToUse = new Connection(backendRpcUrl, 'confirmed');
+        } else {
+          console.log('🔗 Using default Solana connection for deposit');
+        }
+
+        // Initialize Solana service with the chosen connection
+        await solanaInternullService.initialize(connectionToUse, {
           publicKey: solanaPublicKey,
           sendTransaction: solanaSendTransaction
         });
