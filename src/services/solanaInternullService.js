@@ -199,8 +199,44 @@ class SolanaInternullService {
 
         console.log('Deposit transaction signature:', signature);
 
-        // Wait for confirmation
-        await this.connection.confirmTransaction(signature, 'confirmed');
+        // Wait for confirmation with timeout handling
+        console.log('Waiting for confirmation...');
+        try {
+          await this.connection.confirmTransaction(signature, 'confirmed');
+          console.log('✅ Deposit confirmed!');
+        } catch (confirmError) {
+          // Confirmation timed out - check if transaction actually succeeded
+          console.warn('Confirmation timeout, checking transaction status...', confirmError.message);
+
+          try {
+            const txStatus = await this.connection.getSignatureStatus(signature, {
+              searchTransactionHistory: true
+            });
+            console.log('Transaction status:', txStatus);
+
+            if (txStatus && txStatus.value) {
+              if (txStatus.value.err) {
+                // Transaction failed on-chain
+                throw new Error(`Transaction failed on-chain: ${JSON.stringify(txStatus.value.err)}`);
+              }
+              if (txStatus.value.confirmationStatus === 'finalized' ||
+                  txStatus.value.confirmationStatus === 'confirmed') {
+                // Transaction actually succeeded!
+                console.log('✅ Transaction actually succeeded! Status:', txStatus.value.confirmationStatus);
+              } else {
+                // Transaction still pending or unknown
+                console.log('⚠️ Transaction status:', txStatus.value.confirmationStatus || 'pending');
+              }
+            } else {
+              // No status found - transaction might still be processing
+              console.log('⚠️ Transaction status unknown - it may still be processing');
+            }
+          } catch (statusError) {
+            console.error('Failed to check transaction status:', statusError);
+            // Don't throw - the transaction might have succeeded
+            console.log(`⚠️ Check transaction ${signature} manually on Solana Explorer`);
+          }
+        }
 
         return {
           success: true,
@@ -212,7 +248,17 @@ class SolanaInternullService {
         console.error('Error name:', sendError.name);
         console.error('Error message:', sendError.message);
         console.error('Error logs:', sendError.logs);
-        console.error('Full error object:', JSON.stringify(sendError, Object.getOwnPropertyNames(sendError)));
+
+        // If it's a timeout error after sending, the transaction might have succeeded
+        if (sendError.name === 'TransactionExpiredTimeoutError' && sendError.signature) {
+          console.log('⚠️ Transaction timed out but may have succeeded. Signature:', sendError.signature);
+          return {
+            success: true,
+            txHash: sendError.signature,
+            signature: sendError.signature,
+            warning: 'Transaction confirmation timed out. Please verify on Solana Explorer.'
+          };
+        }
 
         // Try to get more details from the error
         if (sendError.logs && sendError.logs.length > 0) {
@@ -350,8 +396,35 @@ class SolanaInternullService {
 
       console.log('Deposit transaction signature:', signature);
 
-      // Wait for confirmation
-      await this.connection.confirmTransaction(signature, 'confirmed');
+      // Wait for confirmation with timeout handling
+      console.log('Waiting for confirmation...');
+      try {
+        await this.connection.confirmTransaction(signature, 'confirmed');
+        console.log('✅ Token deposit confirmed!');
+      } catch (confirmError) {
+        // Confirmation timed out - check if transaction actually succeeded
+        console.warn('Confirmation timeout, checking transaction status...', confirmError.message);
+
+        try {
+          const txStatus = await this.connection.getSignatureStatus(signature, {
+            searchTransactionHistory: true
+          });
+          console.log('Transaction status:', txStatus);
+
+          if (txStatus && txStatus.value) {
+            if (txStatus.value.err) {
+              throw new Error(`Transaction failed on-chain: ${JSON.stringify(txStatus.value.err)}`);
+            }
+            if (txStatus.value.confirmationStatus === 'finalized' ||
+                txStatus.value.confirmationStatus === 'confirmed') {
+              console.log('✅ Transaction actually succeeded! Status:', txStatus.value.confirmationStatus);
+            }
+          }
+        } catch (statusError) {
+          console.error('Failed to check transaction status:', statusError);
+          console.log(`⚠️ Check transaction ${signature} manually on Solana Explorer`);
+        }
+      }
 
       return {
         success: true,
