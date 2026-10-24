@@ -1,7 +1,7 @@
 w# Treasury Dashboard Dockerfile
 
 # Build stage
-FROM node:18-alpine as build
+FROM node:22.23.4-alpine as build
 
 WORKDIR /app
 
